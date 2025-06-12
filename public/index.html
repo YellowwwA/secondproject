@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회의록 생성, TTS STT 및 요약 서비스</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s ease;
+            color: #111827;
+        }
+
+        .form-group input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            outline: none;
+            background-color: #fefeff;
+        }
+
+        .form-group input::placeholder {
+            color: #9ca3af;
+            /* gray-400 */
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            background-color: #a78bfa;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background-color: #8b5cf6;
+        }
+
+        .message {
+            margin-top: 20px;
+            text-align: center;
+            color: #374151;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>회의록 생성</h1>
+        <div class="form-group">
+            <label for="keyword">키워드 :</label>
+            <input type="text" id="keyword" placeholder="회의 키워드를 입력하세요">
+            <br>
+        </div>
+        <div class="form-group">
+            <label for="num">화자 수 :</label>
+            <input type="number" id="num" placeholder="화자 수를 입력하세요" min="1">
+            <br>
+        </div>
+        <div class="form-group">
+            <label for="textlength">텍스트 길이 :</label>
+            <input type="number" id="textlength" placeholder="토큰 수를 입력하세요" min="0">
+        </div>
+        <button id="btn">생성</button>
+
+        <div id="result" style="margin-top:20px; white-space: pre-wrap;"></div>
+    </div>
+
+
+    <script>
+        document.getElementById('btn').addEventListener('click', async () => {
+            const keyword = document.getElementById('keyword').value;
+            const num = document.getElementById('num').value;
+            const textlength = document.getElementById('textlength').value;
+
+            try {
+                const response = await fetch(`/generateText?keyword=${encodeURIComponent(keyword)}&num=${num}&textlength=${textlength}`);
+                const data = await response.text();
+
+                // data가 JSON 객체일 때 예쁘게 문자열화해서 표시
+                //document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+
+                // 만약 data가 문자열이면 그냥 넣기
+                document.getElementById('result').textContent = data;
+
+            } catch (error) {
+                document.getElementById('result').textContent = '에러가 발생했습니다.';
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -8,7 +8,7 @@ cd secondproject
 
 git pull;
 
-SRC=/work/secondproject/nodejs/hello
+SRC=/work/secondproject/node-backend
 DEST=/$HOME/deploy
 
 rm -rf $DEST
