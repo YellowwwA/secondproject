@@ -11,7 +11,7 @@ router.get('/hello', (req, res) => {
     res.send({ data: 'Hello World!!' });
 })
 
-let option0 = 'http://localhost:8080/test';
+let option0 = 'http://13.239.34.242:8080/test';
 router.get('/Test', async (req, res) => {
     try {
         const response = await axios.get(option0, {
@@ -24,7 +24,7 @@ router.get('/Test', async (req, res) => {
 });
 
 
-let option1 = 'http://localhost:8080/generate_meeting';
+let option1 = 'http://13.239.34.242:8080/generate_meeting';
 router.get('/generateText', async (req, res) => {
     try {
         const { keyword, num, textlength } = req.query;

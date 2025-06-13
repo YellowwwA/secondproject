@@ -12,6 +12,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.get("/")
+async def Getroot():
+    return "Helloworld"
 
 @app.get("/test")
 async def GetTest():
