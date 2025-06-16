@@ -12,16 +12,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-@app.get("/")
-async def Getroot():
-    return "Helloworld"
+# @app.get("/")
+# async def Getroot():
+#     return "Helloworld"
 
-@app.get("/test")
-async def GetTest():
-    result = "test"
-    return result
+# @app.get("/testGT")
+# async def GetTestGT():
+#     result = "test Generated Text"
+#     return result
 
-@app.get('/generate_meeting')
+@app.get('/')
 async def generate_meeting(keyword: str, num: int, textlength: int):
     
     if (keyword is None) or (num is None):
