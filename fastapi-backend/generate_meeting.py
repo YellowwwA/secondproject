@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import openai
 from fastapi.middleware.cors import CORSMiddleware
+import os
+import subprocess
 
 app = FastAPI()
 
@@ -40,8 +42,12 @@ async def generate_meeting(keyword: str, num: int, textlength: int):
     result = result.replace('\n\n', '\n')
     result = result.replace('\n', ' ')
     
-    file_path = "generated_meetingtext.txt"
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(result)
+    # file_path = "generated_meetingtext.txt"
+    # with open(file_path, "w", encoding="utf-8") as f:
+    #     f.write(result)
+    
+    filename = "generated_meetingtext.txt"
+    subprocess.run(["node", "../node-backend/upload.js","text", filename, result])
     
     return {result}
+    

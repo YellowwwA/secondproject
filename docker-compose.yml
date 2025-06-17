@@ -4,6 +4,7 @@ services:
   fastapi:
     build:
       context: ./fastapi-backend
+    image: kibwa14/secondproject_fastapi:latest
     ports:
       - "8080:8080"
     networks:
@@ -12,6 +13,7 @@ services:
   nodejs:
     build:
       context: ./node-backend
+    image: kibwa14/secondproject_nodejs:latest
     ports:
       - "3000:3000"
     networks:

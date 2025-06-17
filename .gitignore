@@ -9,3 +9,6 @@ secret.json
 **/.venv
 **/__pycache__/
 **/secret.json
+
+
+.env

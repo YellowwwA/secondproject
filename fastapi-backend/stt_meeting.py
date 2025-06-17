@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import openai 
 from fastapi.middleware.cors import CORSMiddleware
+import os
+import subprocess
+import io
 
 app = FastAPI()
 
@@ -19,12 +22,20 @@ app.add_middleware(
 
 @app.get('/')
 async def stt_meeting():
-    audio_file = open("meetingaudio.mp3", "rb")
+    result = subprocess.run(
+    ["node", "../node-backend/download.js", "meetingaudio.mp3", "mp3"],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    check=True
+    )
+    mp3_bytes = result.stdout
+    audio_file = io.BytesIO(mp3_bytes)
+    audio_file.name = "meetingaudio.mp3 "
+    
     transcript = openai.Audio.transcribe("whisper-1", audio_file)
 
-    file_path = "STT_meetingtext.txt"
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(transcript.text)
+    filename = "STT_meetingtext.txt"
+    subprocess.run(["node", "../node-backend/upload.js","text", filename, result])
 
     print(transcript.text)
     return(transcript.text)

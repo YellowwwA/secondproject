@@ -5,6 +5,22 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source code  #푸시된 깃허브 레포지토리의 코드를 Github Action workflow에 불러오기
+        uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and Push FastAPI Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/secondproject_fastapi:latest ./fastapi-backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/secondproject_fastapi:latest
+
+      - name: Build and Push NodeJS Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/secondproject_nodejs:latest ./node-backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/secondproject_nodejs:latest
+ 
       - name: executing remote ssh commands using password using ssh-actions
         uses: appleboy/ssh-action@v0.1.10
         with:

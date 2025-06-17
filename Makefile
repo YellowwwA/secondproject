@@ -1,4 +1,7 @@
-.PHONY: build up down logs fastapi nodejs
+.PHONY: build up down logs fastapi nodejs push deploy
+
+IMAGE_NAME=kibwa14/secondproject
+TAG=latest
 
 build:
 	docker compose build
@@ -23,3 +26,9 @@ rm:
 
 rmi:
 	docker image prune -a -f
+
+push:
+	docker tag your-container-name $(IMAGE_NAME):$(TAG)
+	docker push $(IMAGE_NAME):$(TAG)
+
+deploy: build push

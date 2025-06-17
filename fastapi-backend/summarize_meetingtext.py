@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import openai
 from fastapi.middleware.cors import CORSMiddleware
+import os
+import subprocess
 
 app = FastAPI()
 
@@ -19,10 +21,15 @@ app.add_middleware(
 
 @app.get('/')
 async def summarize_meeting():
-    with open("generated_meetingtext.txt", "r", encoding="utf-8") as f:
-        text = f.read()
+    result = subprocess.run(
+        ["node", "../node-backend/download.js", "STT_meetingtext.txt", "text"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,          # stdout, stderr을 str로 자동 디코딩
+        check=True
+    )
 
-    prompt = f'''다음 텍스트를 요약해줘 \n\n{text}
+    prompt = f'''다음 텍스트를 요약해줘 \n\n{result.stdout}
     '''
     response = openai.Completion.create(
     model="gpt-3.5-turbo-instruct",
@@ -32,8 +39,9 @@ async def summarize_meeting():
     )
 
     summary = response.choices[0].text.strip()
-    with open("summarizemeetingtext.txt", "w", encoding="utf-8") as f:
-        f.write(summary)
+    
+    filename = "summarizemeetingtext.txt"
+    subprocess.run(["node", "../node-backend/upload.js","text", filename, result])
         
     print("요약 완료")
     return {summary}
