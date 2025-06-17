@@ -12,7 +12,7 @@ router.get('/hello', (req, res) => {
 })
 
 
-let option1 = 'http://13.239.34.242:8080/generate_meeting';
+let option1 = 'http://13.236.151.41:8080/generate_meeting';
 router.get('/generate_meeting', async (req, res) => {
     try {
         const { keyword, num, textlength } = req.query;
@@ -25,7 +25,7 @@ router.get('/generate_meeting', async (req, res) => {
     }
 });
 
-let option2 = 'http://13.239.34.242:8080/tts_meeting';
+let option2 = 'http://13.236.151.41:8080/tts_meeting';
 router.get('/tts_meeting', async (req, res) => {
     try {
         const { keyword, num, textlength } = req.query;
@@ -38,7 +38,7 @@ router.get('/tts_meeting', async (req, res) => {
     }
 });
 
-let option3 = 'http://13.239.34.242:8080/stt_meeting';
+let option3 = 'http://13.236.151.41:8080/stt_meeting';
 router.get('/stt_meeting', async (req, res) => {
     try {
         const { keyword, num, textlength } = req.query;
@@ -52,7 +52,7 @@ router.get('/stt_meeting', async (req, res) => {
 });
 
 
-let option4 = 'http://13.239.34.242:8080/summarize_meetingtext';
+let option4 = 'http://13.236.151.41:8080/summarize_meetingtext';
 router.get('/summarize_meetingtext', async (req, res) => {
     try {
         const { keyword, num, textlength } = req.query;
