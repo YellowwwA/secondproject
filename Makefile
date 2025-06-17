@@ -1,6 +1,7 @@
 .PHONY: build up down logs fastapi nodejs push deploy
 
-IMAGE_NAME=kibwa14/secondproject
+FASTAPI_IMAGE=kibwa14/secondproject_fastapi
+NODEJS_IMAGE=kibwa14/secondproject_nodejs
 TAG=latest
 
 build:
@@ -28,7 +29,7 @@ rmi:
 	docker image prune -a -f
 
 push:
-	docker tag your-container-name $(IMAGE_NAME):$(TAG)
-	docker push $(IMAGE_NAME):$(TAG)
+	docker push $(FASTAPI_IMAGE):$(TAG)
+	docker push $(NODEJS_IMAGE):$(TAG)
 
 deploy: build push
