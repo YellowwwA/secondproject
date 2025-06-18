@@ -2,7 +2,7 @@
 FROM node:20.19.1
 
 # Step 2:
-WORKDIR /USR/SRC/APP
+WORKDIR /usr/src/app
 
 # Step 3:
 COPY package*.json .
