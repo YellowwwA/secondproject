@@ -15,10 +15,14 @@ rm -rf $DEST
 mkdir -p $DEST
 cp -rf $SRC $DEST
 
-cd $DEST/hello
+cd $DEST
 
 source ~/.bashrc
 
 npm install
 
-pm2 restart all
+if pm2 list | grep -q 'online'; then
+    pm2 restart all
+else
+    pm2 start npm --name "app" -- run start
+fi
