@@ -24,5 +24,5 @@ const mainRouter = require('./controllers/mainController');
 app.use('/', mainRouter)
 
 app.listen(3000, function () {
-    console.log("3000 Port : Server Started~!!!!!")
+    console.log("3000 Port : Server Started~!!!!!!")
 });
