@@ -9,7 +9,7 @@ cd ../
 git pull;
 
 SRC=/work/secondproject/node-backend
-DEST=/$HOME/deploy
+DEST=/$SRC/deploy
 
 rm -rf $DEST
 mkdir -p $DEST

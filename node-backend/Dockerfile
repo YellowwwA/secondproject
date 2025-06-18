@@ -8,10 +8,12 @@ WORKDIR /USR/SRC/APP
 COPY package*.json .
 RUN npm install
 
+RUN npm install -g pm2
+
 COPY . .
 
 # Step 5:
 EXPOSE 3000
 
 # Step 6:
-CMD ["node", "app.js"]
+CMD ["pm2-runtime", "app.js"]
