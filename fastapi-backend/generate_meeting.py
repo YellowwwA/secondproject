@@ -16,6 +16,10 @@ app.add_middleware(
 )
 
 openai.api_key=os.getenv("OPENAI_API_KEY")
+if openai.api_key is not None:
+    print("환경변수 있음oooooooooooo")
+else:
+    print("환경변수 없음xxxxxxxxxxxx")
 
 
 # @app.get("/")
