@@ -28,10 +28,7 @@ jobs:
       - name: Create .env file
         run: |
           mkdir -p fastapi_backend
-          cat <<-EOF > ./fastapi_backend/.env
-            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            ELEVENLABS_API_KEY=${{ secrets.ELEVENLABS_API_KEY }}
-          EOF
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > fastapi_backend/.env
       - name: Check .env existence and content
         run: |
           ls -al fastapi_backend
@@ -39,6 +36,9 @@ jobs:
 
       - name: Fix .env permission
         run: chmod 644 fastapi_backend/.env
+      
+      - name: Print current path (확인용)
+        run: pwd
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
