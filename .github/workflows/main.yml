@@ -64,8 +64,7 @@ jobs:
 
             docker network create app-network || true
 
-            mkdir -p /root/work/secondproject/fastapi-backend
-            cat <<EOF > /root/work/secondproject/fastapi-backend/.env
+            cat <<EOF > ./fastapi-backend/.env
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             ELEVENLABS_API_KEY=${{ secrets.ELEVENLABS_API_KEY }}
             AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
