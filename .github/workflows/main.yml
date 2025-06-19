@@ -10,7 +10,7 @@ env:
   EC2_USERNAME: ${{secrets.USERNAME}}
   EC2_KEY: ${{secrets.KEY}}
   OPENAI_API_KEY: ${{secrets.OPENAI_API_KEY}}
-  ELEVENLABS_API_KEY: ${{ecrets.ELEVENLABS_API_KEY}}
+  ELEVENLABS_API_KEY: ${{secrets.ELEVENLABS_API_KEY}}
   
 jobs:
   build-and-deploy:
