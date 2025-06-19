@@ -77,7 +77,7 @@ jobs:
             docker network create app-network || true
 
             echo "--- Running New App Container ---"
-            docker run -d --restart always --name secondproject_fastapi --env-file ./fastapi_backend/.env -p 8080:8080 ${{env.FASTAPI_DOCKER_IMAGE_NAME}}:latest
+            docker run -d --restart always --name secondproject_fastapi -p 8080:8080 ${{env.FASTAPI_DOCKER_IMAGE_NAME}}:latest
             docker run -d --restart always --name secondproject_nodejs -p 3000:3000 ${{env.NODEJS_DOCKER_IMAGE_NAME}}:latest
 
             echo "---Cleaning up unused Docker images ---"
