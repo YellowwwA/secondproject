@@ -37,6 +37,12 @@ jobs:
       - name: Fix .env permission
         run: chmod 644 fastapi_backend/.env
       
+      - name: Check absolute path
+        run: |
+          echo "workspace: !!!!!!!!!!!!!!!!!!!!!!!!!!!! ${{ github.workspace }}"
+          ls -l "/home/runner/work/secondproject/secondproject/fastapi_backend"
+          cat "/home/runner/work/secondproject/secondproject/fastapi_backend/.env"
+
       - name: Print current path (확인용)
         run: pwd
 
