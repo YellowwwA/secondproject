@@ -24,27 +24,6 @@ jobs:
         with:
           username: ${{ env.DOCKER_HUB_USERNAME}}
           password: ${{ env.DOCKER_HUB_TOKEN}}
-      
-      - name: Create .env file
-        run: |
-          mkdir -p fastapi_backend
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > fastapi_backend/.env
-      - name: Check .env existence and content
-        run: |
-          ls -al fastapi_backend
-          cat fastapi_backend/.env || echo ".env not found!"
-
-      - name: Fix .env permission
-        run: chmod 644 fastapi_backend/.env
-      
-      - name: Check absolute path
-        run: |
-          echo "workspace: !!!!!!!!!!!!!!!!!!!!!!!!!!!! ${{ github.workspace }}"
-          ls -l "/home/runner/work/secondproject/secondproject/fastapi_backend"
-          cat "/home/runner/work/secondproject/secondproject/fastapi_backend/.env"
-
-      - name: Print current path (확인용)
-        run: pwd
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
@@ -86,7 +65,7 @@ jobs:
             docker network create app-network || true
 
             echo "--- Running New App Container ---"
-            docker run -d --restart always --name secondproject_fastapi --env-file /home/runner/work/secondproject/secondproject/fastapi_backend/.env -p 8080:8080 ${{env.FASTAPI_DOCKER_IMAGE_NAME}}:latest
+            docker run -d --restart always --name secondproject_fastapi -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e ELEVENLABS_API_KEY="${{ secrets.OTHER_API_KEY }}" -p 8080:8080 ${{env.FASTAPI_DOCKER_IMAGE_NAME}}:latest
             docker run -d --restart always --name secondproject_nodejs -p 3000:3000 ${{env.NODEJS_DOCKER_IMAGE_NAME}}:latest
 
             echo "---Cleaning up unused Docker images ---"
