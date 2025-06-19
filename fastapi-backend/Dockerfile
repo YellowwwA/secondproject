@@ -5,7 +5,7 @@ FROM python:3.9
 RUN apt -y update; apt -y upgrade; apt -y install vim git net-tools
 
 # Step 3 : Specify a Working directory
-WORKDIR /root
+WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

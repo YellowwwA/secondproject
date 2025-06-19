@@ -2,7 +2,7 @@
 FROM node:20.19.1
 
 # Step 2:
-WORKDIR /root
+WORKDIR /app
 #/usr/src/app
 
 # Step 3:
