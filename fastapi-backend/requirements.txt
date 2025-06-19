@@ -19,7 +19,7 @@ httpx==0.28.1
 idna==3.10
 jiter==0.10.0
 multidict==6.4.4
-openai==0.28.0
+openai==0.28.1
 propcache==0.3.2
 pydantic==2.11.5
 pydantic_core==2.33.2

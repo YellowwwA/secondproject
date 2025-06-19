@@ -5,7 +5,7 @@ NODEJS_IMAGE=kibwa14/secondproject_nodejs
 TAG=latest
 
 build:
-	docker compose build
+	docker compose build --no-cache
 
 run:
 	docker compose up -d
