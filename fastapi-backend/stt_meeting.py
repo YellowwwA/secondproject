@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import openai 
+from openai import OpenAI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import subprocess
