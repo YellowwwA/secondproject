@@ -7,6 +7,8 @@ services:
     image: kibwa14/secondproject_fastapi:latest
     ports:
       - "8080:8080"
+    env_file:
+      - ./fastapi-backend/.env
     networks:
       - app-network
 

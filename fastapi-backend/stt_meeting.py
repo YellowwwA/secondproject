@@ -16,6 +16,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 # @app.get("/")
 # async def Getroot():
 #     return "HelloworldSTT"
@@ -32,7 +34,7 @@ async def stt_meeting():
     audio_file = io.BytesIO(mp3_bytes)
     audio_file.name = "meetingaudio.mp3 "
     
-    transcript = openai.Audio.transcribe("whisper-1", audio_file)
+    transcript = client.audio.transcriptions.create(model="whisper-1", file=audio_file)
 
     filename = "STT_meetingtext.txt"
     subprocess.run(["node", "../node-backend/upload.js","text", filename, result])

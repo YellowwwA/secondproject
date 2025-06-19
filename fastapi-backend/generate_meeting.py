@@ -14,6 +14,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
 # @app.get("/")
 # async def Getroot():
 #     return "Helloworld"
@@ -32,7 +36,7 @@ async def generate_meeting(keyword: str, num: int, textlength: int):
     prompt = f'''대화형식으로 대본을 써주세요
     '{keyword}'회사에서 '{num}'명의 직원이 진행한 회의를 대화하는 형식으로 '{textlength}'단어 분량으로 만들어줘.'''
 
-    response = openai.Completion.create(
+    response = client.Completions.create(
         model="gpt-3.5-turbo-instruct",
         prompt=prompt,
         temperature=0.7,

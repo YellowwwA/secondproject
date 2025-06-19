@@ -14,6 +14,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 # @app.get("/")
 # async def Getroot():
 #     return "Helloworld"
@@ -31,7 +34,7 @@ async def summarize_meeting():
 
     prompt = f'''다음 텍스트를 요약해줘 \n\n{result.stdout}
     '''
-    response = openai.Completion.create(
+    response = client.Completions.create(
     model="gpt-3.5-turbo-instruct",
     prompt=prompt,
     temperature=0,
