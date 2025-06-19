@@ -32,6 +32,10 @@ jobs:
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             ELEVENLABS_API_KEY=${{ secrets.ELEVENLABS_API_KEY }}
           EOF
+      - name: Check .env existence and content
+        run: |
+          ls -al fastapi_backend
+          cat fastapi_backend/.env || echo ".env not found!"
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
