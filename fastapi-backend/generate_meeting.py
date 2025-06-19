@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from openai import OpenAI
+import openai
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import subprocess
@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+openai.api_key=os.getenv("OPENAI_API_KEY")
 
 
 # @app.get("/")
@@ -36,7 +36,7 @@ async def generate_meeting(keyword: str, num: int, textlength: int):
     prompt = f'''대화형식으로 대본을 써주세요
     '{keyword}'회사에서 '{num}'명의 직원이 진행한 회의를 대화하는 형식으로 '{textlength}'단어 분량으로 만들어줘.'''
 
-    response = client.Completions.create(
+    response = openai.Completion.create(
         model="gpt-3.5-turbo-instruct",
         prompt=prompt,
         temperature=0.7,

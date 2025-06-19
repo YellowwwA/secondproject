@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from openai import OpenAI
+import openai
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import subprocess
@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+openai.api_key=os.getenv("OPENAI_API_KEY")
 
 # @app.get("/")
 # async def Getroot():
@@ -34,7 +34,7 @@ async def summarize_meeting():
 
     prompt = f'''다음 텍스트를 요약해줘 \n\n{result.stdout}
     '''
-    response = client.Completions.create(
+    response = openai.Completion.create(
     model="gpt-3.5-turbo-instruct",
     prompt=prompt,
     temperature=0,
