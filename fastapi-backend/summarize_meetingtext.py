@@ -31,7 +31,7 @@ s3_client = boto3.client(
     region_name=AWS_REGION,
 )
 
-def read_text_file(s3_key: str) -> str:
+def read_text_file():
     response = s3_client.list_objects_v2(Bucket=S3_BUCKET_NAME, Prefix="stt_meeting/stt_meeting")
     if "Contents" not in response:
         return {"error"}
