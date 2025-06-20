@@ -75,7 +75,7 @@ def summarizemeeting_s3_key():
 async def summarize_meeting():
     text = read_text_file()
 
-    prompt = f'''다음 텍스트를 요약해줘 \n\n{result}
+    prompt = f'''다음 텍스트를 요약해줘 \n\n{text}
     '''
     response = openai.Completion.create(
     model="gpt-3.5-turbo-instruct",
