@@ -92,14 +92,9 @@ def text_to_speech(text: str):
         )
     )
     
-    # 응답 받은 오디오 데이터를 파일로 저장
-    # with open(output_path, "wb") as f:
-    #     for chunk in response:
-    #         if chunk:
-    #             f.write(chunk)
-    
+    audio_data = b"".join(response)
+    mp3_stream = io.BytesIO(audio_data)
     s3_key = generate_unique_mp3_key()
-    mp3_stream = io.BytesIO(response.content)
     s3_client.upload_fileobj(mp3_stream, S3_BUCKET_NAME, s3_key)
 
     return "음성 파일 저장완료"
