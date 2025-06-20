@@ -42,7 +42,7 @@ def generate_unique_mp3_key():
     base_filename = f"tts_meeting_{date_str}"
     folder = f"tts_meeting/"
 
-    existing = s3.list_objects_v2(
+    existing = s3_client.list_objects_v2(
         Bucket=S3_BUCKET_NAME,
         Prefix=folder + base_filename
     )
@@ -100,7 +100,7 @@ def text_to_speech(text: str):
     
     s3_key = generate_unique_mp3_key()
     mp3_stream = io.BytesIO(response.content)
-    s3.upload_fileobj(mp3_stream, S3_BUCKET_NAME, s3_key)
+    s3_client.upload_fileobj(mp3_stream, S3_BUCKET_NAME, s3_key)
 
     return "음성 파일 저장완료"
 

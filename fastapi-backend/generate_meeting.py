@@ -34,7 +34,7 @@ def generate_s3_key():
     date_str = datetime.now().strftime("%Y-%m-%d")
     base_filename = f"generate_meeting_{date_str}"
     folder = "generate_meeting/"
-    existing_files = s3.list_objects_v2(
+    existing_files = s3_client.list_objects_v2(
         Bucket=S3_BUCKET,
         Prefix=folder + base_filename
     )

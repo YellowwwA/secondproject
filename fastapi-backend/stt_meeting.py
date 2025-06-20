@@ -68,7 +68,7 @@ def read_transcribe_mp3(s3_key: str):
 
 @app.get('/')
 async def stt_meeting():
-    response = s3.list_objects_v2(Bucket=S3_BUCKET_NAME, Prefix="tts_meeting/tts_meeting")
+    response = s3_client.list_objects_v2(Bucket=S3_BUCKET_NAME, Prefix="tts_meeting/tts_meeting")
     if "Contents" not in response:
         return {"error": "파일 없음"}
 

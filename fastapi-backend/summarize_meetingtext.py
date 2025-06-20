@@ -49,7 +49,7 @@ def summarizemeeting_s3_key():
     date_str = datetime.now().strftime("%Y-%m-%d")
     base_filename = f"summarize_meetingtext_{date_str}"
     folder = "summarize_meetingtext/"
-    existing_files = s3.list_objects_v2(
+    existing_files = s3_client.list_objects_v2(
         Bucket=S3_BUCKET,
         Prefix=folder + base_filename
     )
