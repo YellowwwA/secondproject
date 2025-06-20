@@ -7,144 +7,82 @@
     <link rel="icon" href="ttsfavicon.png" type="image/png">
     <title>회의 서비스</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f3f4f6;
-        }
-
-        /* 네비게이션 바 */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #2c73e8;
-            padding: 12px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        nav button {
-            background: none;
-            border: none;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        nav button:hover {
-            opacity: 0.7;
-        }
-
-        nav button.active {
-            border-bottom: 2px solid white;
+            padding: 2rem;
+            background-color: #f4f4f9;
         }
 
         .container {
-            padding-top: 80px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            gap: 2rem;
         }
 
         .card {
-            display: none;
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 32px 24px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .card.active {
-            display: block;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 24px;
-            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #333;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 16px;
+            margin-bottom: 1rem;
         }
 
-        .form-group label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 6px;
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: bold;
         }
 
-        .form-group input {
-            padding: 12px 14px;
-            font-size: 15px;
-            border: 1px solid #d1d5db;
-            border-radius: 12px;
-            background-color: #ffffff;
-            transition: all 0.25s ease;
-            color: #111827;
-        }
-
-        .form-group input:focus {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-            outline: none;
-        }
-
-        button.submit-btn {
+        input {
             width: 100%;
-            padding: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            border: none;
-            border-radius: 10px;
-            background-color: #2c73e8;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: #4f46e5;
             color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 8px;
+            margin-top: 0.5rem;
         }
 
-        button.submit-btn:hover {
-            background-color: #8b5cf6;
+        .submit-btn:hover {
+            background-color: #4338ca;
         }
 
-        #result {
-            margin-top: 20px;
+        #resultgen,
+        #resulttts,
+        #resultstt,
+        #resultsum {
+            margin-top: 1rem;
             white-space: pre-wrap;
+            background-color: #f9fafb;
+            padding: 0.8rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
 
 <body>
-
-    <!-- ✅ 탭 버튼 네비게이션 -->
-    <nav>
-        <button class="tab-btn active" data-target="card1">회의록 생성</button>
-        <button class="tab-btn" data-target="card2">TTS 변환</button>
-        <button class="tab-btn" data-target="card3">STT 변환</button>
-        <button class="tab-btn" data-target="card4">요약 결과</button>
-    </nav>
-
-    <!-- ✅ 카드 영역 -->
     <div class="container">
-        <div class="card active" id="card1">
-            <h1>회의록 생성</h1>
+        <!-- 회의록 생성 -->
+        <div class="card" id="card1">
+            <h1>📝 회의록 생성</h1>
             <div class="form-group">
                 <label for="keyword">키워드 :</label>
                 <input type="text" id="keyword" placeholder="회의 키워드를 입력하세요">
@@ -161,47 +99,30 @@
             <div id="resultgen"></div>
         </div>
 
+        <!-- TTS 변환 -->
         <div class="card" id="card2">
-            <h1>텍스트 회의 데이터를 음성 데이터로 변환</h1>
+            <h1>🔊 텍스트 → 음성 변환</h1>
             <button class="submit-btn" id="btntts">TTS 변환</button>
             <div id="resulttts"></div>
         </div>
 
+        <!-- STT 변환 -->
         <div class="card" id="card3">
-            <h1>음성 회의 데이터를 텍스트로 변환</h1>
+            <h1>🎙️ 음성 → 텍스트 변환</h1>
             <button class="submit-btn" id="btnstt">STT 변환</button>
             <div id="resultstt"></div>
         </div>
 
+        <!-- 요약 결과 -->
         <div class="card" id="card4">
-            <h1>텍스트 회의 데이터를 요약</h1>
+            <h1>📄 회의 요약</h1>
             <button class="submit-btn" id="btnsum">요약</button>
             <div id="resultsum"></div>
         </div>
     </div>
 
-    <!-- ✅ 탭 전환 JS -->
     <script>
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const cards = document.querySelectorAll('.card');
-
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetId = btn.getAttribute('data-target');
-
-                tabButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                cards.forEach(card => {
-                    card.classList.remove('active');
-                    if (card.id === targetId) {
-                        card.classList.add('active');
-                    }
-                });
-            });
-        });
-
-        // 생성 버튼
+        // 회의록 생성
         document.getElementById('btngen').addEventListener('click', async () => {
             const keyword = document.getElementById('keyword').value;
             const num = document.getElementById('num').value;
@@ -217,9 +138,8 @@
             }
         });
 
-        // tts 버튼
+        // TTS
         document.getElementById('btntts').addEventListener('click', async () => {
-
             try {
                 const response = await fetch(`/tts_meeting`);
                 const data = await response.text();
@@ -230,9 +150,8 @@
             }
         });
 
-        // stt 버튼
+        // STT
         document.getElementById('btnstt').addEventListener('click', async () => {
-
             try {
                 const response = await fetch(`/stt_meeting`);
                 const data = await response.text();
@@ -243,9 +162,8 @@
             }
         });
 
-        // 요약 버튼
+        // 요약
         document.getElementById('btnsum').addEventListener('click', async () => {
-
             try {
                 const response = await fetch(`/summarize_meetingtext`);
                 const data = await response.text();
