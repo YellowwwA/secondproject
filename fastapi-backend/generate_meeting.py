@@ -53,7 +53,7 @@ def generate_s3_key():
     else:
         filename = f"{base_filename}.txt"
                 
-    return f"{folder}/{filename}"
+    return f"{folder}{filename}"
 
 
 @app.get('/')

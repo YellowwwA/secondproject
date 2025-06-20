@@ -35,7 +35,7 @@ def sttmeeting_s3_key():
     date_str = datetime.now().strftime("%Y-%m-%d")
     base_filename = f"stt_meeting_{date_str}"
     folder = "stt_meeting/"
-    existing_files = s3.list_objects_v2(
+    existing_files = s3_client.list_objects_v2(
         Bucket=S3_BUCKET_NAME,
         Prefix=folder + base_filename
     )
@@ -53,11 +53,11 @@ def sttmeeting_s3_key():
     else:
         filename = f"{base_filename}.txt"
                 
-    return f"{folder}/{filename}"
+    return f"{folder}{filename}"
 
 def read_transcribe_mp3(s3_key: str):
     # S3에서 mp3 파일 가져오기
-    response = s3.get_object(Bucket=S3_BUCKET_NAME, Key=s3_key)
+    response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=s3_key)
     audio_stream = response["Body"].read()  # MP3 바이너리
     # BytesIO로 메모리 내 파일 객체 만들기
     audio_file = io.BytesIO(audio_stream)
@@ -76,7 +76,7 @@ async def stt_meeting():
     latest_file = max(response["Contents"], key=lambda x: x["LastModified"])
     s3_keyA = latest_file["Key"]
     
-    result = read_mp3_from_s3(s3_keyA)
+    result = read_transcribe_mp3(s3_keyA)
     
     #파일로 변환 후 s3업로드
     file_stream = io.BytesIO(result.text.encode("utf-8"))

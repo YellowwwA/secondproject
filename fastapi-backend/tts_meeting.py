@@ -63,7 +63,7 @@ def generate_unique_mp3_key():
     return f"{folder}{filename}"
 
 
-def read_text_file(s3_key: str) -> str:
+def read_text_file():
     response = s3_client.list_objects_v2(Bucket=S3_BUCKET_NAME, Prefix="generate_meeting/generate_meeting")
     if "Contents" not in response:
         return {"error"}
