@@ -32,8 +32,28 @@ s3_client = boto3.client(
 
 def generate_s3_key():
     date_str = datetime.now().strftime("%Y-%m-%d")
-    filename = f"generate_meeting_{date_str}.txt"
-    return f"generate_meeting/{filename}"
+    base_filename = f"generate_meeting_{date_str}"
+    folder = "generate_meeting/"
+    existing_files = s3.list_objects_v2(
+        Bucket=S3_BUCKET,
+        Prefix=folder + base_filename
+    )
+    suffix = 0
+    if "Contents" in existing_files:
+        pattern = re.compile(f"{base_filename}(_(\\d+))?\\.txt$")
+        for obj in existing_files["Contents"]:
+            key = obj["Key"].split("/")[-1]  # abc_2025-06-20_1.txt
+            match = pattern.match(key)
+            if match and match.group(2):
+                suffix = max(suffix, int(match.group(2)))
+        
+        suffix += 1
+        filename = f"{base_filename}_{suffix}.txt"
+    else:
+        filename = f"{base_filename}.txt"
+                
+    return f"{folder}/{filename}"
+
 
 @app.get('/')
 async def generate_meeting(keyword: str, num: int, textlength: int):
@@ -54,11 +74,6 @@ async def generate_meeting(keyword: str, num: int, textlength: int):
     result = result.replace('\n\n', '\n')
     result = result.replace('\n', ' ')
     
-    # file_path = "generated_meetingtext.txt"
-    # with open(file_path, "w", encoding="utf-8") as f:
-    #     f.write(result)
-    
-    filename = "generated_meetingtext.txt"
     file_stream = io.BytesIO(result.encode("utf-8"))
     
     s3_key = generate_s3_key()
