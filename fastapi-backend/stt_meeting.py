@@ -79,7 +79,7 @@ async def stt_meeting():
     result = read_transcribe_mp3(s3_keyA)
     
     #파일로 변환 후 s3업로드
-    file_stream = io.BytesIO(result.text.encode("utf-8"))
+    file_stream = io.BytesIO(result.encode("utf-8"))
     s3_key = sttmeeting_s3_key()
     s3_client.upload_fileobj(file_stream, S3_BUCKET_NAME, s3_key)    
 
