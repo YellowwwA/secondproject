@@ -3,7 +3,9 @@ from pydantic import BaseModel
 import openai
 from fastapi.middleware.cors import CORSMiddleware
 import os
-import subprocess
+import io
+import boto3
+from datetime import datetime
 
 app = FastAPI()
 
@@ -16,20 +18,22 @@ app.add_middleware(
 )
 
 openai.api_key=os.getenv("OPENAI_API_KEY")
-if openai.api_key is not None:
-    print("환경변수 있음oooooooooooo")
-else:
-    print("환경변수 없음xxxxxxxxxxxx")
+AWS_ACCESS_KEY_ID=os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+S3_BUCKET_NAME=os.getenv("S3_BUCKET_NAME")
+AWS_REGION = os.getenv("AWS_REGION")
 
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION,
+)
 
-# @app.get("/")
-# async def Getroot():
-#     return "Helloworld"
-
-# @app.get("/testGT")
-# async def GetTestGT():
-#     result = "test Generated Text"
-#     return result
+def generate_s3_key():
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    filename = f"generate_meeting_{date_str}.txt"
+    return f"generate_meeting/{filename}"
 
 @app.get('/')
 async def generate_meeting(keyword: str, num: int, textlength: int):
@@ -55,7 +59,9 @@ async def generate_meeting(keyword: str, num: int, textlength: int):
     #     f.write(result)
     
     filename = "generated_meetingtext.txt"
-    subprocess.run(["node", "../node-backend/upload.js","text", filename, result])
+    file_stream = io.BytesIO(result.encode("utf-8"))
+    
+    s3_client.upload_fileobj(file_stream, S3_BUCKET_NAME, filename)
     
     return {result}
     

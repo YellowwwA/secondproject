@@ -6,11 +6,14 @@ env:
   FASTAPI_DOCKER_IMAGE_NAME: kibwa14/secondproject_fastapi
   NODEJS_DOCKER_IMAGE_NAME: kibwa14/secondproject_nodejs
   AWS_REGION: ap-southeast-2
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
   EC2_HOST: ${{secrets.HOST}}
   EC2_USERNAME: ${{secrets.USERNAME}}
   EC2_KEY: ${{secrets.KEY}}
   OPENAI_API_KEY: ${{secrets.OPENAI_API_KEY}}
   ELEVENLABS_API_KEY: ${{secrets.ELEVENLABS_API_KEY}}
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
   
 jobs:
   build-and-deploy:
@@ -65,7 +68,7 @@ jobs:
             docker network create app-network || true
 
             echo "--- Running New App Container ---"
-            docker run -d --restart always --name secondproject_fastapi -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e ELEVENLABS_API_KEY="${{ secrets.OTHER_API_KEY }}" -p 8080:8080 ${{env.FASTAPI_DOCKER_IMAGE_NAME}}:latest
+            docker run -d --restart always --name secondproject_fastapi -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" -e ELEVENLABS_API_KEY="${{ secrets.OTHER_API_KEY }}" -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" -e S3_BUCKET_NAME="${{ secrets.S3_BUCKET_NAME }}" -p 8080:8080 ${{env.FASTAPI_DOCKER_IMAGE_NAME}}:latest
             docker run -d --restart always --name secondproject_nodejs -p 3000:3000 ${{env.NODEJS_DOCKER_IMAGE_NAME}}:latest
 
             echo "---Cleaning up unused Docker images ---"
