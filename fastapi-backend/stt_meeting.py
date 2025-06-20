@@ -83,5 +83,5 @@ async def stt_meeting():
     s3_key = sttmeeting_s3_key()
     s3_client.upload_fileobj(file_stream, S3_BUCKET_NAME, s3_key)    
 
-    print(transcript.text)
-    return(transcript.text)
+    print(result)
+    return(result)
