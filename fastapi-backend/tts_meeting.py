@@ -25,7 +25,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 S3_BUCKET_NAME=os.getenv("S3_BUCKET_NAME")
 AWS_REGION = os.getenv("AWS_REGION")
 
-client = ElevenLabs(api_key=API_KEY)
+clientEle = ElevenLabs(api_key=API_KEY)
 
 s3_client = boto3.client(
     "s3",
@@ -81,7 +81,7 @@ def read_text_file():
     
 def text_to_speech(text: str):
     # 음성 생성 요청
-    response = client.text_to_speech.convert(
+    response = clientEle.text_to_speech.convert(
         voice_id=VOICE_ID,
         text=text,
         model_id="eleven_flash_v2_5",
