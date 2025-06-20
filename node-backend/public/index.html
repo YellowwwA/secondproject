@@ -4,33 +4,35 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="ttsfavicon.png" type="image/png">
     <title>회의 서비스</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 2rem;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9fafb;
         }
 
-        .container {
+        .layout {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            height: 100vh;
         }
 
-        .card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #e5e7eb;
+            overflow-y: auto;
+            background: #ffffff;
         }
 
-        h1 {
-            font-size: 1.3rem;
+        .column:last-child {
+            border-right: none;
+        }
+
+        h2 {
+            font-size: 1.2rem;
             margin-bottom: 1rem;
-            color: #333;
+            color: #1f2937;
         }
 
         .form-group {
@@ -39,85 +41,82 @@
 
         label {
             display: block;
-            margin-bottom: 0.3rem;
             font-weight: bold;
+            margin-bottom: 0.4rem;
+            color: #374151;
         }
 
         input {
             width: 100%;
             padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
         }
 
-        .submit-btn {
-            padding: 0.6rem 1.2rem;
+        .btn {
+            padding: 0.5rem 1rem;
             background-color: #4f46e5;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 0.5rem;
         }
 
-        .submit-btn:hover {
+        .btn:hover {
             background-color: #4338ca;
         }
 
-        #resultgen,
-        #resulttts,
-        #resultstt,
-        #resultsum {
+        .result {
             margin-top: 1rem;
-            white-space: pre-wrap;
-            background-color: #f9fafb;
             padding: 0.8rem;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            white-space: pre-wrap;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- 회의록 생성 -->
-        <div class="card" id="card1">
-            <h1>📝 회의록 생성</h1>
+    <div class="layout">
+        <!-- 1단: 회의록 생성 -->
+        <div class="column">
+            <h2>📝 회의록 생성</h2>
             <div class="form-group">
-                <label for="keyword">키워드 :</label>
-                <input type="text" id="keyword" placeholder="회의 키워드를 입력하세요">
+                <label for="keyword">키워드</label>
+                <input type="text" id="keyword" placeholder="예: 마케팅 회의" />
             </div>
             <div class="form-group">
-                <label for="num">화자 수 :</label>
-                <input type="number" id="num" placeholder="화자 수를 입력하세요" min="1">
+                <label for="num">화자 수</label>
+                <input type="number" id="num" placeholder="예: 3" min="1" />
             </div>
             <div class="form-group">
-                <label for="textlength">텍스트 길이 :</label>
-                <input type="number" id="textlength" placeholder="토큰 수를 입력하세요" min="0">
+                <label for="textlength">텍스트 길이</label>
+                <input type="number" id="textlength" placeholder="예: 300" min="1" />
             </div>
-            <button class="submit-btn" id="btngen">생성</button>
-            <div id="resultgen"></div>
+            <button class="btn" id="btngen">생성</button>
+            <div id="resultgen" class="result"></div>
         </div>
 
-        <!-- TTS 변환 -->
-        <div class="card" id="card2">
-            <h1>🔊 텍스트 → 음성 변환</h1>
-            <button class="submit-btn" id="btntts">TTS 변환</button>
-            <div id="resulttts"></div>
+        <!-- 2단: TTS 변환 -->
+        <div class="column">
+            <h2>🔊 TTS 변환</h2>
+            <button class="btn" id="btntts">TTS 변환</button>
+            <div id="resulttts" class="result"></div>
         </div>
 
-        <!-- STT 변환 -->
-        <div class="card" id="card3">
-            <h1>🎙️ 음성 → 텍스트 변환</h1>
-            <button class="submit-btn" id="btnstt">STT 변환</button>
-            <div id="resultstt"></div>
+        <!-- 3단: STT 변환 -->
+        <div class="column">
+            <h2>🎙️ STT 변환</h2>
+            <button class="btn" id="btnstt">STT 변환</button>
+            <div id="resultstt" class="result"></div>
         </div>
 
-        <!-- 요약 결과 -->
-        <div class="card" id="card4">
-            <h1>📄 회의 요약</h1>
-            <button class="submit-btn" id="btnsum">요약</button>
-            <div id="resultsum"></div>
+        <!-- 4단: 요약 -->
+        <div class="column">
+            <h2>📄 요약</h2>
+            <button class="btn" id="btnsum">요약</button>
+            <div id="resultsum" class="result"></div>
         </div>
     </div>
 
@@ -127,7 +126,6 @@
             const keyword = document.getElementById('keyword').value;
             const num = document.getElementById('num').value;
             const textlength = document.getElementById('textlength').value;
-
             try {
                 const response = await fetch(`/generate_meeting?keyword=${encodeURIComponent(keyword)}&num=${num}&textlength=${textlength}`);
                 const data = await response.text();
