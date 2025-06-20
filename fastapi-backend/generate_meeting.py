@@ -61,7 +61,9 @@ async def generate_meeting(keyword: str, num: int, textlength: int):
     filename = "generated_meetingtext.txt"
     file_stream = io.BytesIO(result.encode("utf-8"))
     
-    s3_client.upload_fileobj(file_stream, S3_BUCKET_NAME, filename)
+    s3_key = generate_s3_key()
+    
+    s3_client.upload_fileobj(file_stream, S3_BUCKET_NAME, s3_key)
     
     return {result}
     
