@@ -65,5 +65,17 @@ router.get('/summarize_meetingtext', async (req, res) => {
     }
 });
 
+let option5 = 'http://13.236.151.41:8080/search_meeting';
+router.get('/search_meeting', async (req, res) => {
+    try {
+        const { keyword } = req.query;
+        const response = await axios.get(option5, {
+            params: { keyword }
+        });
+        res.send(response.data);
+    } catch (error) {
+        res.status(500).send('FastAPI 호출 실패');
+    }
+});
 
 module.exports = router;

@@ -7,6 +7,10 @@ import io
 import boto3
 from datetime import datetime
 import re
+import faiss
+import numpy as np
+import json
+from embedding import embeddingfaiss
 
 app = FastAPI()
 
@@ -55,7 +59,6 @@ def generate_s3_key():
                 
     return f"{folder}{filename}"
 
-
 @app.get('/')
 async def generate_meeting(keyword: str, num: int, textlength: int):
     
@@ -75,11 +78,13 @@ async def generate_meeting(keyword: str, num: int, textlength: int):
     result = result.replace('\n\n', '\n')
     result = result.replace('\n', ' ')
     
+    #s3에 저장할수있게 파일로 변환
     file_stream = io.BytesIO(result.encode("utf-8"))
-    
     s3_key = generate_s3_key()
-    
     s3_client.upload_fileobj(file_stream, S3_BUCKET_NAME, s3_key)
+    
+    #임베딩하여 FAISSDB에 저장
+    embeddingfaiss(result, s3_key)
     
     return {result}
     

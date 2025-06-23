@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>회의 도우미</title>
+    <link rel="icon" href="ttsfavicon.png" type="image/png">
+    <title>TTS 서비스 </title>
     <style>
         /* 기본 스타일 */
         * {
@@ -87,11 +88,11 @@
 
         input:focus {
             outline: none;
-            border-color: #6366f1;
+            border-color: #2c73e8;
         }
 
         .btn {
-            background-color: #4f46e5;
+            background-color: #2c73e8;
             color: white;
             border: none;
             padding: 10px 16px;
@@ -102,7 +103,7 @@
         }
 
         .btn:hover {
-            background-color: #4338ca;
+            background-color: #2c73e8;
         }
 
         .result {
@@ -121,8 +122,7 @@
 
     <!-- 🔹 상단 헤더 -->
     <header>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Google_Bookmarks_icon.png/48px-Google_Bookmarks_icon.png"
-            alt="logo" />
+        <img src="ttsfavicon.png" alt="logo" />
         <h1>회의 도우미 시스템</h1>
     </header>
 
@@ -147,25 +147,39 @@
             <div id="resultgen" class="result"></div>
         </div>
 
-        <!-- 2단: TTS -->
-        <div class="card">
-            <h2>🔊 TTS 변환</h2>
-            <button class="btn" id="btntts">TTS 변환</button>
-            <div id="resulttts" class="result"></div>
+        <!-- 2단: TTS + STT 세로 배치 -->
+        <div style="display: flex; flex-direction: column; gap: 24px; flex: 1;">
+            <!-- TTS 카드 -->
+            <div class="card">
+                <h2>🔊 TTS 변환</h2>
+                <button class="btn" id="btntts">TTS 변환</button>
+                <div id="resulttts" class="result"></div>
+            </div>
+
+            <!-- STT 카드 -->
+            <div class="card">
+                <h2>🎙️ STT 변환</h2>
+                <button class="btn" id="btnstt">STT 변환</button>
+                <div id="resultstt" class="result"></div>
+            </div>
         </div>
 
-        <!-- 3단: STT -->
-        <div class="card">
-            <h2>🎙️ STT 변환</h2>
-            <button class="btn" id="btnstt">STT 변환</button>
-            <div id="resultstt" class="result"></div>
-        </div>
-
-        <!-- 4단: 요약 -->
+        <!-- 3단: 요약 -->
         <div class="card">
             <h2>📄 요약</h2>
             <button class="btn" id="btnsum">요약</button>
             <div id="resultsum" class="result"></div>
+        </div>
+
+        <!-- 4단: 검색 (추가) -->
+        <div class="card">
+            <h2>🔍 검색</h2>
+            <div class="form-group">
+                <label for="search">검색어</label>
+                <input type="text" id="search" placeholder="예: 프로젝트 회의" />
+            </div>
+            <button class="btn" id="btnsearch">검색</button>
+            <div id="resultsearch" class="result"></div>
         </div>
     </div>
 
@@ -215,6 +229,18 @@
                 document.getElementById('resultsum').textContent = data;
             } catch (error) {
                 document.getElementById('resultsum').textContent = '에러가 발생했습니다.';
+            }
+        });
+
+        // 검색
+        document.getElementById('btnsearch').addEventListener('click', async () => {
+            const keyword = document.getElementById('search').value;
+            try {
+                const response = await fetch(`/search_meeting?keyword=${encodeURIComponent(keyword)}`);
+                const data = await response.text();
+                document.getElementById('resultsearch').textContent = data;
+            } catch (error) {
+                document.getElementById('resultsearch').textContent = '에러가 발생했습니다.';
             }
         });
     </script>
