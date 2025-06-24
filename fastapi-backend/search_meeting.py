@@ -45,10 +45,13 @@ async def search_meeting(keyword: str):
         print(f"FAISS ID: {r['faiss_id']}, Distance: {r['distance']:.4f}, S3 File & Chunk: {r['s3_path']}")
 
     origintext = get_text_from_s3(s3_path)
-    return search_results
+    return {
+        "search_results": search_results,
+        "original_text": origintext
+    }
 
 def get_text_from_s3(s3_path):
-    s3_path = s3_path.split('#')[0]
+    s3_path = s3_path.split('#')[0].lstrip("/")
     s3 = boto3.client('s3')
     bucket, key = s3_path.split('/', 1)
     obj = s3.get_object(Bucket=bucket,Key=key )

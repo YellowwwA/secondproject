@@ -78,36 +78,46 @@ def embeddingfaiss(text, s3_file_key):
     print(f"FAISS index and mapping saved to {EC2_DIR}")
     
 def search_faiss(keyword, top_k=3):
-    # 1) FAISS 인덱스와 매핑 파일 로드
-    if not os.path.exists(INDEX_PATH) or not os.path.exists(MAPPING_PATH):
-        print("FAISS index or mapping file not found.")
-        return []
+    # 1. FAISS 인덱스와 매핑 파일 존재 여부 확인
+    if not os.path.exists(INDEX_PATH):
+        raise FileNotFoundError(f"FAISS index file not found at {INDEX_PATH}")
+    if not os.path.exists(MAPPING_PATH):
+        raise FileNotFoundError(f"Mapping file not found at {MAPPING_PATH}")
 
+    # 2. 인덱스와 매핑 로드
     index = faiss.read_index(INDEX_PATH)
 
     with open(MAPPING_PATH, "r") as f:
         id_to_s3 = json.load(f)
     id_to_s3 = {int(k): v for k, v in id_to_s3.items()}
 
-    # 2) 키워드 임베딩 생성
-    query_vec = get_embedding(keyword).reshape(1, -1)
+    # 3. 키워드 임베딩 생성
+    try:
+        query_vec = get_embedding(keyword).reshape(1, -1)
+    except Exception as e:
+        print(f"[Embedding Error] {e}")
+        return []
 
-    # 3) FAISS에서 검색 (L2 거리 기준 가장 가까운 top_k개 벡터)
-    distances, indices = index.search(query_vec, top_k)
+    # 4. 검색 수행
+    try:
+        distances, indices = index.search(query_vec, top_k)
+    except Exception as e:
+        print(f"[FAISS Search Error] {e}")
+        return []
 
+    # 5. 결과 구성
     results = []
     for dist, idx in zip(distances[0], indices[0]):
         if idx == -1:
-            continue
+            continue  # 안전하게 체크, 대부분 불필요하지만 유지 가능
         s3_path = id_to_s3.get(idx, "Unknown")
         results.append({
             "faiss_id": idx,
-            "distance": dist,
+            "distance": float(dist),
             "s3_path": s3_path
         })
 
     return results
-
 
 # if __name__ == "__main__":
 #     filename = "generated_meetingtext.txt"  # 같은 폴더에 있는 텍스트 파일 이름
