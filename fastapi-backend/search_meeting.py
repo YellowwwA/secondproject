@@ -51,9 +51,16 @@ async def search_meeting(keyword: str):
     }
 
 def get_text_from_s3(s3_path):
-    s3_path = s3_path.split('#')[0].lstrip("/")
-    s3 = boto3.client('s3')
+    s3_path = s3_path.split('#')[0]
+    if '/' not in s3_path:
+        raise ValueError(f"Invalid S3 path format: {s3_path}")
+    
     bucket, key = s3_path.split('/', 1)
-    obj = s3.get_object(Bucket=bucket,Key=key )
-    text = obj['Body'].read().decode('utf-8')
-    return text
+    
+    print("S3 PATH:", s3_path)
+    print("Bucket:", bucket)
+    print("Key:", key)
+    
+    s3 = boto3.client('s3')
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    return obj['Body'].read().decode('utf-8')
