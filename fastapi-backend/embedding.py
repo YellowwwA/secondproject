@@ -121,7 +121,7 @@ def search_faiss(keyword, top_k=3):
             continue  # 안전하게 체크, 대부분 불필요하지만 유지 가능
         s3_path = id_to_s3.get(idx, "Unknown")
         results.append({
-            "faiss_id": idx,
+            "faiss_id": int(idx),
             "distance": float(dist),
             "s3_path": s3_path
         })
