@@ -75,13 +75,14 @@ def embeddingfaiss(text, s3_file_key):
     index.add(embedding_vectors)
 
     for i in range(len(chunks)):
-        vid = start_id + i
+        vid = int(start_id + i)
         id_to_s3[vid] = f"{S3_BUCKET_NAME}/{s3_file_key}#chunk{i}"
         print(f"Saving vector id {vid} with s3 path: {S3_BUCKET_NAME}/{s3_file_key}#chunk{i}")
-
-    faiss.write_index(index, INDEX_PATH)
+    id_to_s3_serializable = {str(k): v for k, v in id_to_s3.items()}
     with open(MAPPING_PATH, "w") as f:
-        json.dump(id_to_s3, f)
+        json.dump(id_to_s3_serializable, f)
+    faiss.write_index(index, INDEX_PATH)
+
 
     print(f"FAISS index and mapping saved to {EC2_DIR}")
     
