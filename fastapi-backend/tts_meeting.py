@@ -8,6 +8,7 @@ import io
 import re
 from datetime import datetime
 from search_meeting import search_meeting
+from fastapi.responses import StreamingResponse
 
 
 app = FastAPI()
@@ -98,12 +99,11 @@ def text_to_speech(text: str):
     s3_key = generate_unique_mp3_key()
     s3_client.upload_fileobj(mp3_stream, S3_BUCKET_NAME, s3_key)
 
-    return "음성 파일 저장완료"
+    return StreamingResponse(io.BytesIO(response), media_type="audio/mpeg")
 
 
 @app.get('/')
-async def tts_meeting():
-    text = read_text_file()
+async def tts_meeting(text: str):
     text_to_speech(text)
     return {"TTS완료"}
     

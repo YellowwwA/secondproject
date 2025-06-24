@@ -28,7 +28,7 @@ router.get('/generate_meeting', async (req, res) => {
 let option2 = 'http://13.236.151.41:8080/tts_meeting';
 router.get('/tts_meeting', async (req, res) => {
     try {
-        const { keyword, num, textlength } = req.query;
+        const { text } = req.query;
         const response = await axios.get(option2, {
             params: {}
         });

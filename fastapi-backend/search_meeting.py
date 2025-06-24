@@ -57,7 +57,7 @@ async def search_meeting(keyword: str):
         matched_chunks.append(chunk_text)
     
     original_text = get_text_from_s3(search_results[0]["s3_path"])
-    return matched_chunks
+    return matched_chunks[0]
 
 def get_chunk_from_s3(s3_path):
     path, chunk_id = s3_path.split('#')

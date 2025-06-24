@@ -159,8 +159,9 @@
                     <input type="text" id="search" placeholder="예: 프로젝트 회의" />
                 </div>
                 <button class="btn" id="btnsearch">검색</button>
-                <button class="btn" id="btntts">TTS 변환</button>
+
                 <div id="resultsearch" class="result-list"></div>
+                <button class="btn" onclick="speakText()">TTS 변환</button>
                 <audio id="audioPlayer" controls></audio>
             </div>
         </div>
@@ -217,17 +218,39 @@
             }
         });
 
-        document.getElementById('btntts').addEventListener('click', async () => {
-            try {
-                const response = await fetch(`/tts_meeting`);
-                const audioBlob = await response.blob();
-                const audioUrl = URL.createObjectURL(audioBlob);
-                document.getElementById('audioPlayer').src = audioUrl;
-                document.getElementById('audioPlayer').play();
-            } catch (error) {
-                alert('TTS 변환 중 오류가 발생했습니다.');
+        //        document.getElementById('btntts').addEventListener('click', async () => {
+        //            try {
+        //                const response = await fetch(`/tts_meeting`);
+        //                const audioBlob = await response.blob();
+        //                const audioUrl = URL.createObjectURL(audioBlob);
+        //                document.getElementById('audioPlayer').src = audioUrl;
+        //                document.getElementById('audioPlayer').play();
+        //            } catch (error) {
+        //                alert('TTS 변환 중 오류가 발생했습니다.');
+        //            }
+        //       });
+
+        async function speakText() {
+            const text = document.getElementById("resultsearch").innerText;
+
+            const res = await fetch("http://13.236.151.41:8080/tts_meeting", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text })
+            });
+
+            if (!res.ok) {
+                console.error("TTS 실패");
+                return;
             }
-        });
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+
+            const audioPlayer = document.getElementById("audioPlayer");
+            audioPlayer.src = url;
+            audioPlayer.play();
+        }
     </script>
 </body>
 
