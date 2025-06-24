@@ -38,6 +38,8 @@ s3_client = boto3.client(
 async def search_meeting(keyword: str):
     top_k = 3
     search_results = search_faiss(keyword, top_k)
+    if not search_results:
+        return {"message":"No search results found."}
     s3_path = search_results[0]["s3_path"]
     for r in search_results:
         print(f"FAISS ID: {r['faiss_id']}, Distance: {r['distance']:.4f}, S3 File & Chunk: {r['s3_path']}")
@@ -46,6 +48,7 @@ async def search_meeting(keyword: str):
     return search_results
 
 def get_text_from_s3(s3_path):
+    s3_path = s3_path.split('#')[0]
     s3 = boto3.client('s3')
     bucket, key = s3_path.split('/', 1)
     obj = s3.get_object(Bucket=bucket,Key=key )
