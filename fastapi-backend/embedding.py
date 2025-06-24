@@ -22,6 +22,8 @@ def split_by_speaker(text):
         speaker = parts[i].strip()
         utterance = parts[i+1].strip() if (i+1) < len(parts) else ''
         chunks.append(f"{speaker} {utterance}")
+    if not chunks:
+        return [text]
     return chunks
 
 # 임베딩 생성
@@ -36,11 +38,13 @@ def get_embedding(text):
 def embeddingfaiss(text, s3_file_key):
     # 텍스트 분할
     chunks = split_by_speaker(text)
+    print("Chunks:", chunks)
 
     # 임베딩 생성
     embedding_vectors = []
     for chunk in chunks:
         emb = get_embedding(chunk)
+        print("Embedding shape:", emb.shape)
         embedding_vectors.append(emb)
     embedding_vectors = np.vstack(embedding_vectors)
 
@@ -103,3 +107,12 @@ def search_faiss(keyword, top_k=3):
         })
 
     return results
+
+
+# if __name__ == "__main__":
+#     filename = "generated_meetingtext.txt"  # 같은 폴더에 있는 텍스트 파일 이름
+#     with open(filename, "r", encoding="utf-8") as f:
+#         file_text = f.read()
+#     sample_s3_key = "./abc.txt"
+    
+#     embeddingfaiss(file_text, sample_s3_key)
