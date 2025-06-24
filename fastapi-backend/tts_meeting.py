@@ -104,7 +104,6 @@ def text_to_speech(text: str):
 
 @app.get('/')
 async def tts_meeting(text: str):
-    text_to_speech(text)
-    return {"TTS완료"}
-    
+    response = text_to_speech(text)
+    return response
     
