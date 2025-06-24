@@ -6,6 +6,11 @@ import numpy as np
 import openai
 
 openai.api_key=os.getenv("OPENAI_API_KEY")
+AWS_ACCESS_KEY_ID=os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+S3_BUCKET_NAME=os.getenv("S3_BUCKET_NAME")
+AWS_REGION = os.getenv("AWS_REGION")
+
 print("Current working directory:", os.getcwd())
 EC2_DIR = "./faiss"
 INDEX_PATH = os.path.join(EC2_DIR, "index.faiss")
@@ -69,7 +74,7 @@ def embeddingfaiss(text, s3_file_key):
 
     for i in range(len(chunks)):
         vid = start_id + i
-        id_to_s3[vid] = f"{s3_file_key}#chunk{i}"
+        id_to_s3[vid] = f"{S3_BUCKET_NAME}/{s3_file_key}#chunk{i}"
 
     faiss.write_index(index, INDEX_PATH)
     with open(MAPPING_PATH, "w") as f:
