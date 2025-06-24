@@ -7,6 +7,7 @@ import boto3
 import io
 import re
 from datetime import datetime
+from search_meeting import search_meeting
 
 
 app = FastAPI()

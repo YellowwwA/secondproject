@@ -30,7 +30,7 @@
             text-align: center;
             font-size: 2rem;
             font-weight: bold;
-            color: #1f3b8b;
+            color: #2c73e8;
             margin-bottom: 32px;
         }
 
@@ -81,10 +81,12 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
+            margin-right: 8px;
+            margin-top: 8px;
         }
 
         .btn:hover {
-            background-color: #4f46e5;
+            background-color: #0b52c4;
         }
 
         .result-list {
@@ -97,7 +99,6 @@
         .result-item {
             display: flex;
             border-left: 6px solid #2c73e8;
-            /* 파란 세로줄 */
             background-color: #ffffff;
             border-radius: 12px;
             padding: 16px;
@@ -109,6 +110,11 @@
 
         .result-item:hover {
             background-color: #f9fafb;
+        }
+
+        audio {
+            margin-top: 16px;
+            width: 100%;
         }
 
         @media (max-width: 768px) {
@@ -140,10 +146,12 @@
                     <input type="number" id="textlength" placeholder="예: 500" min="1" />
                 </div>
                 <button class="btn" id="btngen">생성</button>
+                <button class="btn" id="btnsum">요약하기</button>
                 <div id="resultgen" class="result-list"></div>
+                <div id="resultsum" class="result-list"></div>
             </div>
 
-            <!-- 우측: 검색 기능 -->
+            <!-- 우측: 검색 기능 및 TTS -->
             <div class="section">
                 <h2>🔍 회의록 검색</h2>
                 <div class="form-group">
@@ -151,12 +159,28 @@
                     <input type="text" id="search" placeholder="예: 프로젝트 회의" />
                 </div>
                 <button class="btn" id="btnsearch">검색</button>
+                <button class="btn" id="btntts">TTS 변환</button>
                 <div id="resultsearch" class="result-list"></div>
+                <audio id="audioPlayer" controls></audio>
             </div>
         </div>
     </div>
 
     <script>
+        function renderResultList(elementId, textData) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = '';
+            const lines = textData.split('\n');
+            lines.forEach(line => {
+                if (line.trim()) {
+                    const item = document.createElement('div');
+                    item.classList.add('result-item');
+                    item.textContent = line;
+                    container.appendChild(item);
+                }
+            });
+        }
+
         document.getElementById('btngen').addEventListener('click', async () => {
             const keyword = document.getElementById('keyword').value;
             const num = document.getElementById('num').value;
@@ -171,6 +195,16 @@
             }
         });
 
+        document.getElementById('btnsum').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`/summarize_meetingtext`);
+                const data = await response.text();
+                renderResultList('resultsum', data);
+            } catch (error) {
+                document.getElementById('resultsum').innerHTML = '<div class="result-item">요약 중 에러가 발생했습니다.</div>';
+            }
+        });
+
         document.getElementById('btnsearch').addEventListener('click', async () => {
             const keyword = document.getElementById('search').value;
 
@@ -179,23 +213,21 @@
                 const data = await response.text();
                 renderResultList('resultsearch', data);
             } catch (error) {
-                document.getElementById('resultsearch').innerHTML = '<div class="result-item">에러가 발생했습니다.</div>';
+                document.getElementById('resultsearch').innerHTML = '<div class="result-item">검색 중 에러가 발생했습니다.</div>';
             }
         });
 
-        function renderResultList(elementId, textData) {
-            const container = document.getElementById(elementId);
-            container.innerHTML = '';
-            const lines = textData.split('\n');
-            lines.forEach(line => {
-                if (line.trim()) {
-                    const item = document.createElement('div');
-                    item.classList.add('result-item');
-                    item.textContent = line;
-                    container.appendChild(item);
-                }
-            });
-        }
+        document.getElementById('btntts').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`/tts_meeting`);
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                document.getElementById('audioPlayer').src = audioUrl;
+                document.getElementById('audioPlayer').play();
+            } catch (error) {
+                alert('TTS 변환 중 오류가 발생했습니다.');
+            }
+        });
     </script>
 </body>
 
