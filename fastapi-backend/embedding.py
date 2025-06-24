@@ -7,7 +7,7 @@ import openai
 
 openai.api_key=os.getenv("OPENAI_API_KEY")
 
-EC2_DIR = "/work/secondproject/fastapi-backend/faiss"
+EC2_DIR = "./faiss"
 INDEX_PATH = os.path.join(EC2_DIR, "index.faiss")
 MAPPING_PATH = os.path.join(EC2_DIR, "id_to_s3.json")
 
