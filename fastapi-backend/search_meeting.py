@@ -40,15 +40,39 @@ async def search_meeting(keyword: str):
     search_results = search_faiss(keyword, top_k)
     if not search_results:
         return {"message":"No search results found."}
-    s3_path = search_results[0]["s3_path"]
-    for r in search_results:
-        print(f"FAISS ID: {r['faiss_id']}, Distance: {r['distance']:.4f}, S3 File & Chunk: {r['s3_path']}")
+    
+    # s3_path = search_results[0]["s3_path"]
+    # for r in search_results:
+    #     print(f"FAISS ID: {r['faiss_id']}, Distance: {r['distance']:.4f}, S3 File & Chunk: {r['s3_path']}")
 
-    origintext = get_text_from_s3(s3_path)
-    return {
-        "search_results": search_results,
-        "original_text": origintext
-    }
+    # origintext = get_text_from_s3(s3_path)
+    # return {
+    #     "search_results": search_results,
+    #     "original_text": origintext
+    # }
+    matched_chunks = []
+    for result in search_results:
+        s3_path = result["s3_path"]
+        chunk_text = get_chunk_from_s3(s3_path)
+        matched_chunks.append(chunk_text)
+    
+    original_text = get_text_from_s3(search_results[0]["s3_path"])
+    return matched_chunks
+
+def get_chunk_from_s3(s3_path):
+    path, chunk_id = s3_path.split('#')
+    chunk_index = int(chunk_id.replace('chunk', ''))
+    
+
+    bucket, key = path.split('/', 1)
+    s3 = boto3.client('s3')
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    text = obj['Body'].read().decode('utf-8')
+
+    chunks = split_by_speaker(text)
+    if 0 <= chunk_index < len(chunks):
+        return chunks[chunk_index]
+    return "[Chunk index out of range]"
 
 def get_text_from_s3(s3_path):
     s3_path = s3_path.split('#')[0]
