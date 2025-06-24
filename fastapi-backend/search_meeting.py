@@ -36,7 +36,7 @@ s3_client = boto3.client(
 
 @app.get('/')
 async def search_meeting(keyword: str):
-    top_k = 3
+    top_k = 1
     search_results = search_faiss(keyword, top_k)
     if not search_results:
         return {"message":"No search results found."}
