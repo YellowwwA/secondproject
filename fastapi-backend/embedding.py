@@ -41,6 +41,8 @@ def get_embedding(text):
     return np.array(embedding, dtype='float32')
 
 def embeddingfaiss(text, s3_file_key):
+    if not os.path.exists('./faiss'):
+        os.makedirs('./faiss')
     # 텍스트 분할
     chunks = split_by_speaker(text)
     print("Chunks:", chunks)
