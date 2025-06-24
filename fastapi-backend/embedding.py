@@ -4,6 +4,7 @@ import re
 import faiss
 import numpy as np
 import openai
+from faiss_manager import upload_faiss_to_s3
 
 openai.api_key=os.getenv("OPENAI_API_KEY")
 AWS_ACCESS_KEY_ID=os.getenv("AWS_ACCESS_KEY_ID")
@@ -82,11 +83,12 @@ def embeddingfaiss(text, s3_file_key):
     with open(MAPPING_PATH, "w") as f:
         json.dump(id_to_s3_serializable, f)
     faiss.write_index(index, INDEX_PATH)
-
+    
+    upload_faiss_to_s3()
 
     print(f"FAISS index and mapping saved to {EC2_DIR}")
     
-def search_faiss(keyword, top_k=3):
+def search_faiss(keyword, top_k=1):
     # 1. FAISS 인덱스와 매핑 파일 존재 여부 확인
     if not os.path.exists(INDEX_PATH):
         raise FileNotFoundError(f"FAISS index file not found at {INDEX_PATH}")
