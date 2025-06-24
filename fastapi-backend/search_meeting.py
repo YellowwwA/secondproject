@@ -7,7 +7,7 @@ import io
 import boto3
 from datetime import datetime
 import re
-from embedding import embeddingfaiss, search_faiss
+from embedding import embeddingfaiss, search_faiss, split_by_speaker
 
 app = FastAPI()
 

@@ -2,8 +2,8 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>통합 미디어 요약 서비스</title>
     <style>
         * {
@@ -13,44 +13,46 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f5f7fa;
+            background-color: #f9fafb;
             color: #1f2937;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .title {
+        h1 {
             text-align: center;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
-            color: #1f3b8b;
-            margin-bottom: 32px;
+            margin: 40px 0 20px;
+            color: #3730a3;
+            /* 진한 보라색 */
         }
 
-        .content {
+        .main-container {
             display: flex;
+            justify-content: center;
             gap: 24px;
+            padding: 0 40px 60px;
         }
 
-        .section {
+        .card {
             flex: 1;
-            background-color: #f9fafb;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
         }
 
-        .section h2 {
+        .left-card {
+            background-color: #f3f6fb;
+            /* 연한 파란색 */
+        }
+
+        .card h2 {
             font-size: 1.2rem;
-            color: #374151;
             margin-bottom: 16px;
+            font-weight: 600;
         }
 
         .form-group {
@@ -63,22 +65,25 @@
             font-weight: 500;
         }
 
-        input,
-        select {
+        input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
+            font-size: 14px;
         }
 
         .btn {
-            padding: 10px 16px;
             background-color: #6366f1;
+            /* 보라색 */
             color: white;
             border: none;
+            padding: 10px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: background 0.3s ease;
         }
 
         .btn:hover {
@@ -87,53 +92,54 @@
 
         .result {
             margin-top: 16px;
+            background-color: #f9fafb;
             padding: 12px;
-            background: #fff;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             white-space: pre-wrap;
+            min-height: 80px;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="title">통합 미디어 요약 서비스</div>
 
-        <div class="content">
-            <!-- 좌측: 회의록 생성 -->
-            <div class="section">
-                <h2>📝 회의록 생성</h2>
-                <div class="form-group">
-                    <label for="keyword">키워드</label>
-                    <input type="text" id="keyword" placeholder="예: 기획 회의" />
-                </div>
-                <div class="form-group">
-                    <label for="num">화자 수</label>
-                    <input type="number" id="num" placeholder="예: 3" min="1" />
-                </div>
-                <div class="form-group">
-                    <label for="textlength">텍스트 길이</label>
-                    <input type="number" id="textlength" placeholder="예: 500" min="1" />
-                </div>
-                <button class="btn" id="btngen">생성</button>
-                <div id="resultgen" class="result"></div>
-            </div>
+    <h1>통합 미디어 요약 서비스</h1>
 
-            <!-- 우측: 검색 기능 -->
-            <div class="section">
-                <h2>🔍 회의록 검색</h2>
-                <div class="form-group">
-                    <label for="search">검색어</label>
-                    <input type="text" id="search" placeholder="예: 프로젝트 회의" />
-                </div>
-                <button class="btn" id="btnsearch">검색</button>
-                <div id="resultsearch" class="result"></div>
+    <div class="main-container">
+        <!-- 좌측 카드 (회의록 생성) -->
+        <div class="card left-card">
+            <h2>📝 회의록 생성</h2>
+            <div class="form-group">
+                <label for="keyword">키워드</label>
+                <input type="text" id="keyword" placeholder="예: 기획 회의">
             </div>
+            <div class="form-group">
+                <label for="num">화자 수</label>
+                <input type="number" id="num" placeholder="예: 3" min="1">
+            </div>
+            <div class="form-group">
+                <label for="textlength">텍스트 길이</label>
+                <input type="number" id="textlength" placeholder="예: 500" min="1">
+            </div>
+            <button class="btn" id="btngen">생성</button>
+            <div id="resultgen" class="result"></div>
+        </div>
+
+        <!-- 우측 카드 (검색) -->
+        <div class="card">
+            <h2>🔍 검색</h2>
+            <div class="form-group">
+                <label for="search">검색어</label>
+                <input type="text" id="search" placeholder="예: 삼성, AI, 정책 등">
+            </div>
+            <button class="btn" id="btnsearch">검색</button>
+            <div id="resultsearch" class="result"></div>
         </div>
     </div>
 
     <script>
+        // 회의록 생성
         document.getElementById('btngen').addEventListener('click', async () => {
             const keyword = document.getElementById('keyword').value;
             const num = document.getElementById('num').value;
@@ -147,6 +153,7 @@
             }
         });
 
+        // 검색
         document.getElementById('btnsearch').addEventListener('click', async () => {
             const keyword = document.getElementById('search').value;
             try {
