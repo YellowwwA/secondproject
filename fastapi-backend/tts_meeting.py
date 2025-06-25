@@ -99,7 +99,7 @@ def text_to_speech(text: str):
     s3_key = generate_unique_mp3_key()
     s3_client.upload_fileobj(mp3_stream, S3_BUCKET_NAME, s3_key)
 
-    return StreamingResponse(io.BytesIO(response), media_type="audio/mpeg")
+    return StreamingResponse(io.BytesIO(audio_data), media_type="audio/mpeg")
 
 
 @app.get('/')

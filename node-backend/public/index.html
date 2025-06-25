@@ -225,8 +225,9 @@
         });
 
         document.getElementById('btnsum').addEventListener('click', async () => {
+            const text = document.getElementById("resultgen").innerText;
             try {
-                const response = await fetch(`/summarize_meetingtext`);
+                const response = await fetch(`/summarize_meetingtext?text=${encodeURIComponent(text)}`);
                 const data = await response.text();
                 renderResultList('resultsum', data);
             } catch (error) {

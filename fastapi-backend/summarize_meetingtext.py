@@ -72,8 +72,7 @@ def summarizemeeting_s3_key():
 
 
 @app.get('/')
-async def summarize_meeting():
-    text = read_text_file()
+async def summarize_meeting(text: str):
 
     prompt = f'''다음 텍스트를 요약해줘 \n\n{text}
     '''

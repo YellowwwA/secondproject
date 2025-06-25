@@ -26,7 +26,7 @@ def download_faiss_from_s3():
         s3_key = f"{S3_FAISS_PREFIX}/{filename}"
         try:
             print(f"[Download] {s3_key} → {local_path}")
-            s3.download_file(S3_BUCKET, s3_key, local_path)
+            s3_client.download_file(S3_BUCKET_NAME, s3_key, local_path)
         except Exception as e:
             print(f"[Warning] Failed to download {s3_key}: {e}")
 
@@ -36,6 +36,6 @@ def upload_faiss_to_s3():
         s3_key = f"{S3_FAISS_PREFIX}/{filename}"
         try:
             print(f"[Upload] {local_path} → {s3_key}")
-            s3.upload_file(local_path, S3_BUCKET, s3_key)
+            s3_client.upload_file(local_path, S3_BUCKET_NAME, s3_key)
         except Exception as e:
             print(f"[Error] Failed to upload {filename}: {e}")
