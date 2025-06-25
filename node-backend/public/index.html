@@ -4,273 +4,52 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>통합 미디어 요약 서비스</title>
+    <title>미디어 요약 시스템</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
             background-color: #f5f7fa;
-            color: #1f2937;
-        }
-
-        .navbar {
-            background-color: #2c73e8;
-            color: white;
-            padding: 12px 24px;
             display: flex;
-            justify-content: flex-end;
-            gap: 24px;
-            font-size: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .navbar a:hover {
-            text-decoration: underline;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            text-align: center;
         }
 
         .title {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 2.4rem;
             color: #2c73e8;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
-        .content {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
-        .section {
-            flex: 1;
-            background-color: #f9fafb;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-            min-width: 320px;
-        }
-
-        .section h2 {
-            font-size: 1.2rem;
-            color: #374151;
-            margin-bottom: 16px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .btn {
-            padding: 10px 16px;
+        .btn-start {
+            padding: 14px 32px;
+            font-size: 1rem;
             background-color: #2c73e8;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: 500;
-            margin-right: 8px;
-            margin-top: 8px;
+            transition: background-color 0.2s ease-in-out;
         }
 
-        .btn:hover {
+        .btn-start:hover {
             background-color: #0b52c4;
-        }
-
-        .result-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .result-item {
-            display: flex;
-            border-left: 6px solid #2c73e8;
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 15px;
-            color: #374151;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: background 0.3s ease;
-        }
-
-        .result-item:hover {
-            background-color: #f9fafb;
-        }
-
-        audio {
-            margin-top: 16px;
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 
 <body>
-    <div class="navbar">
-        <a href="http://13.236.151.41:3000">회의 서비스</a>
-        <a href="http://3.25.208.15:3000">뉴스 서비스</a>
-    </div>
-
     <div class="container">
-        <div class="title">통합 미디어 요약 서비스</div>
+        <div class="title">통합 미디어 요약 시스템</div>
+        <button class="btn-start" onclick="location.href='http://3.25.208.15:3000'">뉴스 서비스</button>
+        <button class="btn-start" onclick="location.href='/main.html'">회의 서비스</button>
 
-        <div class="content">
-            <!-- 좌측: 회의록 생성 -->
-            <div class="section">
-                <h2>📝 회의록 생성</h2>
-                <div class="form-group">
-                    <label for="keyword">키워드</label>
-                    <input type="text" id="keyword" placeholder="예: 기획 회의" />
-                </div>
-                <div class="form-group">
-                    <label for="num">화자 수</label>
-                    <input type="number" id="num" placeholder="예: 3" min="1" />
-                </div>
-                <div class="form-group">
-                    <label for="textlength">텍스트 길이</label>
-                    <input type="number" id="textlength" placeholder="예: 500" min="1" />
-                </div>
-                <button class="btn" id="btngen">생성</button>
-                <div id="resultgen" class="result-list"></div>
-                <button class="btn" id="btnsum">요약하기</button>
-                <div id="resultsum" class="result-list"></div>
-            </div>
-
-            <!-- 우측: 검색 기능 및 TTS -->
-            <div class="section">
-                <h2>🔍 회의록 검색</h2>
-                <div class="form-group">
-                    <label for="search">검색어</label>
-                    <input type="text" id="search" placeholder="예: 프로젝트 회의" />
-                </div>
-                <button class="btn" id="btnsearch">검색</button>
-                <div id="resultsearch" class="result-list"></div>
-
-                <button class="btn" id="btntts">TTS 변환</button>
-                <audio id="audioPlayer" controls></audio>
-            </div>
-        </div>
     </div>
-
-    <script>
-        function renderResultList(elementId, textData) {
-            const container = document.getElementById(elementId);
-            container.innerHTML = '';
-            const lines = textData.split('\n');
-            lines.forEach(line => {
-                if (line.trim()) {
-                    const item = document.createElement('div');
-                    item.classList.add('result-item');
-                    item.textContent = line;
-                    container.appendChild(item);
-                }
-            });
-        }
-
-        document.getElementById('btngen').addEventListener('click', async () => {
-            const keyword = document.getElementById('keyword').value;
-            const num = document.getElementById('num').value;
-            const textlength = document.getElementById('textlength').value;
-
-            try {
-                const response = await fetch(`/generate_meeting?keyword=${encodeURIComponent(keyword)}&num=${num}&textlength=${textlength}`);
-                const data = await response.text();
-                renderResultList('resultgen', data);
-            } catch (error) {
-                document.getElementById('resultgen').innerHTML = '<div class="result-item">에러가 발생했습니다.</div>';
-            }
-        });
-
-        document.getElementById('btnsum').addEventListener('click', async () => {
-            const text = document.getElementById("resultgen").innerText;
-            try {
-                const response = await fetch(`/summarize_meetingtext?text=${encodeURIComponent(text)}`);
-                const data = await response.text();
-                renderResultList('resultsum', data);
-            } catch (error) {
-                document.getElementById('resultsum').innerHTML = '<div class="result-item">요약 중 에러가 발생했습니다.</div>';
-            }
-        });
-
-        document.getElementById('btnsearch').addEventListener('click', async () => {
-            const keyword = document.getElementById('search').value;
-
-            try {
-                const response = await fetch(`/search_meeting?keyword=${encodeURIComponent(keyword)}`);
-                const data = await response.text();
-                renderResultList('resultsearch', data);
-            } catch (error) {
-                document.getElementById('resultsearch').innerHTML = '<div class="result-item">검색 중 에러가 발생했습니다.</div>';
-            }
-        });
-
-        document.getElementById('btntts').addEventListener('click', async () => {
-            const text = document.getElementById("resultsearch").innerText;
-
-            try {
-                const response = await fetch(`/tts_meeting?text=${encodeURIComponent(text)}`);
-
-                if (!response.ok) {
-                    console.error("TTS 실패");
-                    alert("TTS 변환에 실패했습니다.");
-                    return;
-                }
-
-                const blob = await response.blob();
-                const url = URL.createObjectURL(blob);
-
-                const audioPlayer = document.getElementById("audioPlayer");
-                audioPlayer.src = url;
-                audioPlayer.play();
-            } catch (error) {
-                console.error("TTS 요청 중 에러 발생:", error);
-                alert("TTS 요청 중 오류가 발생했습니다.");
-            }
-        });
-    </script>
 </body>
 
 </html>
