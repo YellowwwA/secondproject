@@ -6,41 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="ttsfavicon.png" type="image/png">
     <title>통합 미디어 요약 시스템</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #eff0f4, #f8f9fc);
+            color: #1c1c1e;
             height: 100vh;
-            background: linear-gradient(135deg, #4385ee, #ffffff);
-            color: white;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
         }
 
-        .wrapper {
-            width: 90%;
+        .container {
             max-width: 1200px;
+            width: 90%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            gap: 40px;
         }
 
-        .left-section {
+        .left {
             flex: 1;
-            padding-right: 40px;
         }
 
-        .title {
-            font-size: 2.8rem;
-            font-weight: bold;
+        .left h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #111827;
             margin-bottom: 20px;
         }
 
-        .description {
+        .left p {
             font-size: 1.1rem;
+            color: #6b7280;
             margin-bottom: 30px;
-            color: #e0e0e0;
+            line-height: 1.6;
         }
 
         .buttons {
@@ -50,60 +58,71 @@
 
         .btn {
             padding: 14px 28px;
-            font-size: 1rem;
-            background-color: white;
-            color: #2c73e8;
+            background: linear-gradient(to right, #6366f1, #8b5cf6);
+            color: white;
+            font-weight: 600;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s, background-color 0.3s;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
         }
 
         .btn:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.3);
         }
 
-        .right-section {
+        .right {
             flex: 1;
             display: flex;
             justify-content: center;
+            align-items: center;
         }
 
-        .right-section img {
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 30px;
             width: 100%;
             max-width: 500px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card img {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         @media (max-width: 768px) {
-            .wrapper {
+            .container {
                 flex-direction: column;
                 text-align: center;
             }
 
-            .left-section {
-                padding-right: 0;
-                margin-bottom: 40px;
+            .right {
+                margin-top: 30px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="left-section">
-            <div class="title">Media Summarize TTS Service</div>
-            <div class="description">넘쳐나는 정보에 비해 이를 소화할 시간이 부족한 시대에<br> 미디어 요약 TTS 시스템을 제공합니다.</div>
+    <div class="container">
+        <div class="left">
+            <h1>Media Summarize TTS Service</h1>
+            <p>넘쳐나는 정보에 비해 이를 소화할 시간이 부족한 시대에<br> AI 기반 요약 시스템으로 핵심만 확인할 수 있는 서비스 입니다.</p>
             <div class="buttons">
-                <button class="btn" onclick="location.href='http://13.236.151.41:3000/main.html'">회의 서비스</button>
-                <button class="btn" onclick="location.href='http://3.25.208.15:3000'">뉴스 서비스</button>
+                <button class="btn" onclick="location.href='http://13.236.151.41:3000/main.html'">뉴스 서비스</button>
+                <button class="btn" onclick="location.href='http://3.25.208.15:3000'">회의 서비스</button>
             </div>
         </div>
-        <div class="right-section">
-            <img src="01169ce6-a6f1-48ec-a8eb-88da6a125667.png" alt="UI 예시 이미지" />
+        <div class="right">
+            <div class="glass-card">
+                <img src="01169ce6-a6f1-48ec-a8eb-88da6a125667.png" alt="요약 예시 이미지">
+            </div>
         </div>
     </div>
 </body>
