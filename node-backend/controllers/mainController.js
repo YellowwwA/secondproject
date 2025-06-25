@@ -30,8 +30,10 @@ router.get('/tts_meeting', async (req, res) => {
     try {
         const { text } = req.query;
         const response = await axios.get(option2, {
-            params: {}
+            params: { text },
+            responseType: 'arraybuffer'
         });
+        res.setHeader('Content-Type', 'audio/mpeg');
         res.send(response.data);
     } catch (error) {
         res.status(500).send('FastAPI 호출 실패');

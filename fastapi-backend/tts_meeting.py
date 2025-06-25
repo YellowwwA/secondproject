@@ -102,7 +102,7 @@ def text_to_speech(text: str):
     return StreamingResponse(io.BytesIO(response), media_type="audio/mpeg")
 
 
-@app.post('/tts_meeting')
+@app.get('/')
 async def tts_meeting(text: str):
     response = text_to_speech(text)
     return response
