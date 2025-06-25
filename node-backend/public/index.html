@@ -4,51 +4,106 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>미디어 요약 시스템</title>
+    <title>통합 미디어 요약 시스템</title>
     <style>
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f5f7fa;
+            height: 100vh;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
 
-        .container {
-            text-align: center;
+        .wrapper {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .left-section {
+            flex: 1;
+            padding-right: 40px;
         }
 
         .title {
-            font-size: 2.4rem;
-            color: #2c73e8;
-            margin-bottom: 24px;
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
-        .btn-start {
-            padding: 14px 32px;
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 28px;
             font-size: 1rem;
-            background-color: #2c73e8;
-            color: white;
+            background-color: white;
+            color: #6e57e0;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.3s;
         }
 
-        .btn-start:hover {
-            background-color: #0b52c4;
+        .btn:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .right-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .right-section img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .wrapper {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .left-section {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="title">통합 미디어 요약 시스템</div>
-        <button class="btn-start" onclick="location.href='http://3.25.208.15:3000'">뉴스 서비스</button>
-        <button class="btn-start" onclick="location.href='/main.html'">회의 서비스</button>
-
+    <div class="wrapper">
+        <div class="left-section">
+            <div class="title">We make things done!</div>
+            <div class="description">뉴스와 회의 요약 기능을 아주 간편하게 이용하세요.<br> 단순하지만 강력한 요약 시스템을 제공합니다.</div>
+            <div class="buttons">
+                <button class="btn" onclick="location.href='http://3.25.208.15:3000'">뉴스 서비스</button>
+                <button class="btn" onclick="location.href='http://13.236.151.41/main.html'">회의 서비스</button>
+            </div>
+        </div>
+        <div class="right-section">
+            <img src="01169ce6-a6f1-48ec-a8eb-88da6a125667.png" alt="UI 예시 이미지" />
+        </div>
     </div>
 </body>
 
