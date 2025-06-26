@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodejs-deployment         # 배포 리소스의 이름
+  name: nodejs-deployment-J         # 배포 리소스의 이름
 spec:
   replicas: 1                     # 원하는 파드 수 (보통 1개부터 시작)
   selector:
@@ -21,12 +21,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs-service            # Node.js 서비스 이름 (프론트에서 접근용)
+  name: nodejs-service-J            # Node.js 서비스 이름 (프론트에서 접근용)
 spec:
-  type: LoadBalancer              # 외부에 노출되는 서비스 (클라우드 환경에서 사용)
+  type: NodePort              # 외부에 노출되는 서비스 (클라우드 환경에서 사용)
   selector:
     app: nodejs                   # 위의 Deployment 파드를 선택
   ports:
     - protocol: TCP
       port: 80                    # 외부에서 접근할 포트 (브라우저에서 접속 시 사용)
       targetPort: 3000           # 실제 컨테이너에서 Node.js가 리슨하는 포트
+      nodePort: 31000
