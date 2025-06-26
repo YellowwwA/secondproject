@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodejs-deployment-J         # 배포 리소스의 이름
+  name: nodejs-deployment-yb         # 배포 리소스의 이름
 spec:
   replicas: 1                     # 원하는 파드 수 (보통 1개부터 시작)
   selector:
@@ -21,7 +21,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs-service-J            # Node.js 서비스 이름 (프론트에서 접근용)
+  name: nodejs-service-yb            # Node.js 서비스 이름 (프론트에서 접근용)
 spec:
   type: NodePort              # 외부에 노출되는 서비스 (클라우드 환경에서 사용)
   selector:

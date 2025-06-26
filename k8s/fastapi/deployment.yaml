@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi-deployment-J        # FastAPI 배포 이름
+  name: fastapi-deployment-yb        # FastAPI 배포 이름
 spec:
   replicas: 1
   selector:
@@ -21,7 +21,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: fastapi-service-J           # 클러스터 내부에서 nodejs가 fastapi에 요청할 때 사용하는 이름
+  name: fastapi-service-yb           # 클러스터 내부에서 nodejs가 fastapi에 요청할 때 사용하는 이름
 spec:
   selector:
     app: fastapi
