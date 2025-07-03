@@ -10,3 +10,5 @@
 
 ## 기술서
 + 링크
+
+![회의록 요약](https://github.com/user-attachments/assets/d51c22aa-d44b-49d5-a344-02175115818c)
